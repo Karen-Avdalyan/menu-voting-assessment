@@ -27,23 +27,27 @@ type:
 if you want to run without docker files (locally) you can continue with this steps.<br/>
 1. open terminal 
 2. go to root dir of project
-3. activate conda or venv environment (here will be example with conda, but if you want to run with venv you can try to search it's sample proces like this)
+3. create .env from .env.example with your db credentials
+4. activate conda or venv environment (here will be example with venv)
     ```
-    conda activate
+    source venv/bin/activate
     ```
-4. after activating you need to download all modules that need for correct working
+5. after activating you need to download all modules that need for correct working
     ```cmd
     pip install -r requirements.txt
     ```
-5. you need to have mysql db with conditionals witch are mentioned in .env.example (or you can put your conditionals on .env file)
-6. then just run migrations for this type this commands
+6. you need to have mysql db with conditionals witch are mentioned in .env.example (or you can put your conditionals on .env file)
+7. then just run migrations and seed 
     ```cmd
     python manage.py makemigrations
     ```
     ```cmd
     python manage.py migrate
     ```
-7. just run the application.
+    ```cmd
+    python manage.py loaddata seed
+    ```
+8. just run the application.
     ```cmd
     python manage.py runserver
     ```
@@ -51,7 +55,19 @@ if you want to run without docker files (locally) you can continue with this ste
 ## how to run tests
 
 1. To run tests you will need a sample database.
-2. Create test db, run migrations via `manage.py makemigrations` then `manage.py migrate`.
-3. Change environment variables to work with test db.
-4. View `test_db.py` for info on what should the db have.
-5. Run tests via `manage.py test`
+2. Create test db, run migrations via and seed
+    ```cmd
+    python manage.py makemigrations
+    ```
+    ```cmd
+    python manage.py migrate
+    ```
+    ```cmd
+    python manage.py loaddata seed
+    ```
+4. Change environment variables to work with test db.
+5. View `test_db.py` for info on what should the db have.
+6. Run tests via 
+    ```cmd
+    python manage.py test
+    ```
