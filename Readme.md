@@ -52,22 +52,15 @@ if you want to run without docker files (locally) you can continue with this ste
     python manage.py runserver
     ```
    
-## how to run tests
+## how to setup db.
 
-1. To run tests you will need a sample database.
-2. Create test db, run migrations via and seed
-    ```cmd
-    python manage.py makemigrations
-    ```
-    ```cmd
-    python manage.py migrate
-    ```
-    ```cmd
-    python manage.py loaddata seed
-    ```
-4. Change environment variables to work with test db.
-5. View `test_db.py` for info on what should the db have.
-6. Run tests via 
-    ```cmd
-    python manage.py test
-    ```
+1. Run docker container. Where db will be running. in `init/01.sql` make sure to
+replace all occurrences of `test_db` with corresponding ones.
+2. Run migrations via `python manage.py migrate` and `python manage.py migrate --database test`.
+3. Init db data with `python manage.py init_db`.
+4. Init test db data with `python manage.py init_test_db`.
+
+   
+## how to run tests (setup db beforehand)
+
+Run tests via `python manage.py test` (May need to use root db user in `.env`)

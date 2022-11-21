@@ -3,12 +3,14 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from restaurant.restaurantApp.user.restaurant_manager.models import RestaurantWorker
+from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
 from tests.test_user_auth import TestUserViews
 
 
 class TestRestaurantViews(APITestCase):
 
     def setUp(self):
+        SeedTestDB.createAll()
         self.url = reverse("restaurant")
         self.client = TestUserViews().test_access_token()
 

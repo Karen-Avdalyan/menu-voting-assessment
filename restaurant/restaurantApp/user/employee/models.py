@@ -6,7 +6,7 @@ from django.db import models
 
 class EmployeeManager(UserManager):
     def get_queryset(self):
-        return super(EmployeeManager, self).get_queryset().filter(groups__in=["1"])
+        return super(EmployeeManager, self).get_queryset().filter(groups__name__in=["employee"])
 
 
 class Employee(User):

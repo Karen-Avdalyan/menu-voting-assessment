@@ -63,7 +63,7 @@ class IsAuthorizedForMenuVoting(BasePermission):
         return bool(
             request.user and
             request.user.is_authenticated and
-            request.user.groups.filter(pk=1) and
+            request.user.groups.filter(name="employee") and
             request.user.employee.last_voted < datetime.date.today()
         )
 
@@ -76,7 +76,7 @@ class CanAlterVote(BasePermission):
         return bool(
             request.user and
             request.user.is_authenticated and
-            request.user.groups.filter(pk=1)
+            request.user.groups.filter(name="employee")
         )
 
 

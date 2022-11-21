@@ -1,7 +1,6 @@
 import datetime
 
 from django.contrib.auth.models import User, Group
-from rest_framework.test import APITestCase
 
 from restaurant.restaurantApp.menu.menu_item.models import MenuItem
 from restaurant.restaurantApp.menu.models import Menu
@@ -11,43 +10,48 @@ from restaurant.restaurantApp.user.restaurant_manager.models import RestaurantWo
 from restaurant.test_entities import TEST_ENTITIES
 
 
-class TestSetup(APITestCase):
-    def createAll(self):
-        self.createTestAdmin()
-        self.createGroups()
-        self.createEmployee()
-        self.createRestaurantWorker()
-        self.createRestaurant()
-        self.createMenus()
+class SeedTestDB:
+    @staticmethod
+    def createAll():
+        SeedTestDB.createTestAdmin()
+        SeedTestDB.createGroups()
+        SeedTestDB.createEmployee()
+        SeedTestDB.createRestaurantWorker()
+        SeedTestDB.createRestaurant()
+        SeedTestDB.createMenus()
 
-    def createTestAdmin(self):
+    @staticmethod
+    def createTestAdmin():
         if not User.objects.filter(username=TEST_ENTITIES["users"]["admin"]["username"]):
             User.objects.create_superuser(
                 username=TEST_ENTITIES["users"]["admin"]["username"],
                 password=TEST_ENTITIES["users"]["admin"]["password"]
             )
 
-    def createGroups(self):
+    @staticmethod
+    def createGroups():
         for group in TEST_ENTITIES["groups"]:
             Group.objects.get_or_create(name=group["name"])
 
-    def createEmployee(self):
+    @staticmethod
+    def createEmployee():
         if not Employee.objects.filter(username=TEST_ENTITIES["users"]["employee"]["username"]):
             user = Employee.objects.create(
                 username=TEST_ENTITIES["users"]["employee"]["username"],
-                password=TEST_ENTITIES["users"]["employee"]["password"],
             )
+            user.set_password(TEST_ENTITIES["users"]["employee"]["password"])
             employee_group = Group.objects.get(name="employee")
             employee_group.user_set.add(user)
             user.save()
             employee_group.save()
 
-    def createRestaurantWorker(self):
+    @staticmethod
+    def createRestaurantWorker():
         if not RestaurantWorker.objects.filter(username=TEST_ENTITIES["users"]["restaurant_worker"]["username"]):
-            user, _ = User.objects.get_or_create(
+            user = User.objects.create(
                 username=TEST_ENTITIES["users"]["restaurant_worker"]["username"],
-                password=TEST_ENTITIES["users"]["restaurant_worker"]["password"],
             )
+            user.set_password(TEST_ENTITIES["users"]["restaurant_worker"]["password"])
             restaurant_group = Group.objects.get(name="restaurant")
             restaurant_group.user_set.add(user)
             user.save()
@@ -55,16 +59,18 @@ class TestSetup(APITestCase):
             return user
         return RestaurantWorker.objects.filter(username=TEST_ENTITIES["users"]["restaurant_worker"]["username"]).first()
 
-    def createRestaurant(self):
-        manager = self.createRestaurantWorker()
+    @staticmethod
+    def createRestaurant():
+        manager = SeedTestDB.createRestaurantWorker()
         restaurant, _ = Restaurant.objects.get_or_create(
             name=TEST_ENTITIES["restaurant"]["name"],
             manager=manager
         )
         return restaurant
 
-    def createMenus(self):
-        restaurant = self.createRestaurant()
+    @staticmethod
+    def createMenus():
+        restaurant = SeedTestDB.createRestaurant()
         for menu_item in TEST_ENTITIES["menu"]["items"]:
             menu = Menu.objects.create(
                 name=TEST_ENTITIES["menu"]["name"],

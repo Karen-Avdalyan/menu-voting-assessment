@@ -84,11 +84,6 @@ WSGI_APPLICATION = "restaurant.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-print( os.getenv('DB_NAME'))
-print( os.getenv('DB_USER'))
-print( os.getenv('DB_PASSWORD'))
-print( os.getenv('DB_HOST'))
-print( os.getenv('DB_PORT'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -97,11 +92,20 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
-        'TEST': {
-            'MIRROR': 'default',
-        },
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('TEST_DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     },
 }
+
+import sys
+if 'test' in sys.argv or 'init_test_db' in sys.argv:
+    DATABASES['default'] = DATABASES['test']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

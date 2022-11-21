@@ -2,15 +2,18 @@ import datetime
 
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
 
 from restaurant.restaurantApp.menu.models import Menu
 from restaurant.restaurantApp.restaurant.models import Restaurant
+from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
+from restaurant.test_entities import TEST_ENTITIES
 from tests.test_user_auth import TestUserViews
+from rest_framework.test import APITestCase
 
 
 class TestMenuViews(APITestCase):
     def setUp(self):
+        SeedTestDB.createAll()
         self.url = reverse("menu")
         self.client = TestUserViews().test_restaurant_worker_token()
         self.employee = TestUserViews().test_employee_token()
@@ -20,7 +23,7 @@ class TestMenuViews(APITestCase):
         data = {
             "name": "test_menu",
             "date": datetime.date.today().strftime("%Y-%m-%d"),
-            "restaurant_id": Restaurant.objects.get(name="restaurant").id,
+            "restaurant_id": Restaurant.objects.get(name=TEST_ENTITIES["restaurant"]["name"]).id,
             "items": [
                 {
                     "name": "Caesar",

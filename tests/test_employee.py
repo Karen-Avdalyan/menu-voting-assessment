@@ -1,17 +1,14 @@
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIRequestFactory
 
-from restaurant.restaurantApp.user.employee.views import ListCreateEmployeeAPIView
+from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
 from tests.test_user_auth import TestUserViews
+from rest_framework.test import APITestCase
 
 
 class TestEmployeeViews(APITestCase):
     def setUp(self):
-        self.factory = APIRequestFactory()
-        self.view = ListCreateEmployeeAPIView.as_view()
-        self.url = reverse("user-employee")
-
+        SeedTestDB.createAll()
         self.client = TestUserViews().test_access_token()
 
     def test_employee_POST(self):

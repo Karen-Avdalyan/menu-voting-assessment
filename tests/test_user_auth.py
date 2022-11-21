@@ -1,12 +1,14 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APIClient, APITestCase
+
+from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
 
 
 class TestUserViews(APITestCase):
     def setUp(self):
-        pass
+        SeedTestDB.createAll()
 
     def test_access_token(self):
         admin_user = User.objects.get(username="adm")
@@ -41,15 +43,15 @@ class TestUserViews(APITestCase):
         return client
 
     def test_employee_token(self):
-        restaurant_worker = User.objects.get(username="employee")
+        employee = User.objects.get(username="employee")
 
         token_obtain_url = reverse('token_obtain_pair')
         client = APIClient()
 
-        resp = client.post(token_obtain_url, {'username': restaurant_worker.username, 'password': '12345678'}, format='json')
+        resp = client.post(token_obtain_url, {'username': employee.username, 'password': '12345678'}, format='json')
         assert 'access' in resp.data
         token = resp.data['access']
-        client.force_authenticate(restaurant_worker, token)
+        client.force_authenticate(employee, token)
 
         verify_url = reverse('user-employee')
         resp = client.get(verify_url, data={'format': 'json'})

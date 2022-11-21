@@ -4,11 +4,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase, APIRequestFactory
 
 from restaurant.restaurantApp.user.employee.views import ListCreateEmployeeAPIView
+from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
 from tests.test_user_auth import TestUserViews
 
 
 class TestRestaurantWorkerViews(APITestCase):
     def setUp(self):
+        SeedTestDB.createAll()
         self.factory = APIRequestFactory()
         self.view = ListCreateEmployeeAPIView.as_view()
         self.url = reverse("user-restaurant-worker")
