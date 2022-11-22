@@ -63,4 +63,4 @@ replace all occurrences of `test_db` with corresponding ones.
    
 ## how to run tests (setup db beforehand)
 
-Run tests via `python manage.py test` (May need to use root db user in `.env`)
+Run tests via `python manage.py test`
