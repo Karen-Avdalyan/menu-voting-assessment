@@ -7,7 +7,8 @@ from restaurant.restaurantApp.utils.seed_test_db import SeedTestDB
 
 
 class TestUserViews(APITestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         SeedTestDB.createAll()
 
     def test_access_token(self):

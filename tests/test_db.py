@@ -9,7 +9,8 @@ from restaurant.test_entities import TEST_ENTITIES
 
 
 class TestDBContents(APITestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         SeedTestDB.createAll()
 
     def test_necessary_object_for_tests(self):

@@ -8,9 +8,11 @@ from tests.test_user_auth import TestUserViews
 
 
 class TestRestaurantViews(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        SeedTestDB.createAll()
 
     def setUp(self):
-        SeedTestDB.createAll()
         self.url = reverse("restaurant")
         self.client = TestUserViews().test_access_token()
 

@@ -12,8 +12,11 @@ from rest_framework.test import APITestCase
 
 
 class TestMenuViews(APITestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         SeedTestDB.createAll()
+
+    def setUp(self):
         self.url = reverse("menu")
         self.client = TestUserViews().test_restaurant_worker_token()
         self.employee = TestUserViews().test_employee_token()

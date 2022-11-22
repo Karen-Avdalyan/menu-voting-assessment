@@ -7,8 +7,11 @@ from rest_framework.test import APITestCase
 
 
 class TestEmployeeViews(APITestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         SeedTestDB.createAll()
+
+    def setUp(self):
         self.client = TestUserViews().test_access_token()
 
     def test_employee_POST(self):

@@ -9,8 +9,11 @@ from tests.test_user_auth import TestUserViews
 
 
 class TestRestaurantWorkerViews(APITestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         SeedTestDB.createAll()
+
+    def setUp(self):
         self.factory = APIRequestFactory()
         self.view = ListCreateEmployeeAPIView.as_view()
         self.url = reverse("user-restaurant-worker")
